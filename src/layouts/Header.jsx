@@ -5,13 +5,17 @@ import { motion } from "framer-motion";
 import { BsBasket2Fill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserData } from "../features/user/UserSlice";
+import { getUserData, logOut } from "../features/user/UserSlice";
 
 function Header() {
-  const user = useSelector((state) =>state.userReducer.user);
+  const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
-  const login = async () => {
+  const login = () => {
     dispatch(getUserData());
+  };
+
+  const logout = () => {
+    dispatch(logOut());
   };
 
   return (
@@ -28,14 +32,31 @@ function Header() {
             <p className="text-sm text-white font-semibold text-center">8</p>
           </div>
         </div>
-
-        <motion.img
-          onClick={login}
-          whileTap={{ scale: 0.6 }}
-          src={user ? user.photoURL : Logo}
-          alt="avater"
-          className="object-cover shadow-md cursor-pointer shadow-gray-500 h-8 w-8 min-w-[30px] min-h-[30px] rounded-full"
-        />
+          {user ? (
+            <div className="relative group">
+            <motion.img
+              onClick={logout}
+              whileTap={{ scale: 0.6 }}
+              src={user ? user.photoURL : Logo}
+              alt="avater"
+              className="object-cover shadow-md cursor-pointer shadow-gray-500 h-8 w-8 min-w-[30px] min-h-[30px] rounded-full"
+            />
+            <div className="menu absolute bg-gray-50 shadow-lg rounded-lg p-4 right-0 top-auto hidden group-hover:block">
+            <ul>
+              <li>Item</li>
+              <li>logout</li>
+            </ul>
+          </div>
+            </div>
+            
+          ) : (
+            <div
+              onClick={login}
+              className="inline text-gray-600 hover:text-black cursor-pointer"
+            >
+              Login
+            </div>
+          )}
       </div>
     </div>
   );

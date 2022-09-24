@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+
 import { app } from "../../firebase.config";
 
 const firebaseAuth = getAuth(app);
@@ -15,6 +16,12 @@ export const getUserData = createAsyncThunk("user/getData", async () => {
   const response = await signInWithPopup(firebaseAuth, provider);
   return response.user.providerData[0];
 });
+
+export const logOut = createAsyncThunk("user/logout", async ()=>{
+  const response = await signOut(firebaseAuth);
+  return response;
+});
+
 
 const userSlice = createSlice({
   name: "user",
@@ -32,9 +39,19 @@ const userSlice = createSlice({
       state.user = state;
       state.error = action.error.message;
     });
+
+    builder.addCase(logOut.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(logOut.fulfilled, (state, action) => {
+      state.isLoading = false;
+      localStorage.removeItem("user");
+    });
+    builder.addCase(logOut.rejected, (state, action) => {
+      state.user = state;
+      state.error = action.error.message;
+    });
   },
 });
-
-export const { getUser, setUser } = userSlice.actions;
 
 export default userSlice.reducer;

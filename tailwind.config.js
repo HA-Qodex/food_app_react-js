@@ -2,6 +2,7 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      display: ["group-hover"],
       width: {
         150: "150px",
         190: "190px",

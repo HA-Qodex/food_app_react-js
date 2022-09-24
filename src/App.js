@@ -1,8 +1,13 @@
 import Index from "./routes";
 import './App.css'
+import { AnimatePresence } from "framer-motion";
 
 function App() {
-  return <Index />;
+  return (
+  <AnimatePresence>
+  <Index />
+  </AnimatePresence>
+  );
 }
 
 export default App;

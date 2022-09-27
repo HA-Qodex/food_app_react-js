@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 
 function App() {
   return (
-  <AnimatePresence>
+  <AnimatePresence exitBeforeEnter>
   <Index />
   </AnimatePresence>
   );
